@@ -1,11 +1,22 @@
 class ProductManager {
-    constructor(){
+    constructor() {
         this.prodcuts = []
     }
 
-    addProduct(title, description, price, thumbnail, code, stock) {
+
+    getId() {
+        try {
+            return this.prodcuts[this.prodcuts.length - 1].id + 1
+        }
+        catch{
+            return 1
+        }
+    }
+
+    addProduct(title, description, price, thumbnail, code, stock) {        
+        
         const product = {
-            id: 
+            id: this.getId(),
             title,
             description,
             price,
@@ -20,30 +31,27 @@ class ProductManager {
     getProducts() {
         return this.prodcuts
     }
-}
 
-
-
-
-function* foo() { 
-    let id = 1
-    while (true){
-        yield id
-        id++
+    getProductById(id) {
+        return this.prodcuts.find((product) => product.id === id) || console.error("Not Found");
     }
 }
 
+const obj = new ProductManager()
+obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
+obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
+obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
+obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
+obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
+console.log(obj.getProducts());
+
+
+
+/* 
 let f = foo();
 
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
-console.log(f.next().value);
+
+let a = undefined
+
+console.log(a || 52);
+console.log(a ?? 52); */
