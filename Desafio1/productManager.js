@@ -4,19 +4,27 @@ class ProductManager {
     }
 
 
-    getId() {
-        try {
-            return this.prodcuts[this.prodcuts.length - 1].id + 1
-        }
-        catch{
-            return 1
-        }
+    #generateId() {
+        return this.prodcuts.length 
+                ? this.prodcuts[this.prodcuts.length - 1].id + 1
+                : 1
     }
 
+    #getProductByCode(code) {
+        return this.prodcuts.find((product) => product.code === code)
+    }   
+
     addProduct(title, description, price, thumbnail, code, stock) {        
-        
+        if(arguments.length != 6) {
+            return 'Error. Check data'
+        }
+
+        if (this.#getProductByCode(code)) {
+            return 'The product already exists'
+        }
+
         const product = {
-            id: this.getId(),
+            id: this.#generateId(),
             title,
             description,
             price,
@@ -33,25 +41,7 @@ class ProductManager {
     }
 
     getProductById(id) {
-        return this.prodcuts.find((product) => product.id === id) || console.error("Not Found");
-    }
+        return this.prodcuts.find((product) => product.id === id) || "Not Found"
+    }   
 }
 
-const obj = new ProductManager()
-obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
-obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
-obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
-obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
-obj.addProduct('Ale', 'adadasdadad', 150, 'khe', 15, 89)
-console.log(obj.getProducts());
-
-
-
-/* 
-let f = foo();
-
-
-let a = undefined
-
-console.log(a || 52);
-console.log(a ?? 52); */
