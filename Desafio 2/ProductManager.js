@@ -13,9 +13,7 @@ class ProductManager {
         const products = await this.getProducts()
 
         const existingProduct = this.#productExists(products, product.code) 
-        if (existingProduct) {
-            throw new Error('The product already exists')
-        }
+        if (existingProduct) throw new Error('The product already exists')
 
         const id = this.#generateId(products)
         const newProduct = { id, ...product }
@@ -36,13 +34,16 @@ class ProductManager {
         const products = await this.getProducts()
         const product =  products.find((product) => product.id === productId)
         
-        if (!product) throw new Error('Not found') 
+        if (!product) throw new Error('No products found') 
         return product
     }
 
     async updateProduct(productId, productValues) {
         const products = await this.getProducts()
         const productIndex = products.findIndex((product) => product.id === productId )
+
+        if(productIndex === -1) throw new Error('No products found') 
+
         const updatedProduct = {...products[productIndex], ...productValues}
 
         products.splice(productIndex, 1, updatedProduct)
@@ -52,6 +53,8 @@ class ProductManager {
     async deleteProducts(productId) {
         const products = await this.getProducts()
         const newProductList = products.filter((product) => product.id !== productId)
+
+        if(products.length === newProductList.length) throw new Error('No products found')
 
         await fs.promises.writeFile(this.path, JSON.stringify(newProductList))
     }
@@ -67,10 +70,13 @@ class ProductManager {
     }
 }
 
+
+
+
 const testProductManager = async () => {
 
     // Creacion de instancia y return de arreglo vacío
-    const productManager = new ProductManager('usuarios.json')
+    const productManager = new ProductManager('productos.json')
     console.log(await productManager.getProducts(), '\n-------------------------') 
 
     // Agrego producto de prueba y lo muestro 
@@ -118,12 +124,12 @@ const testProductManager = async () => {
     console.log(await productManager.getProducts(),'\n-------------------------')
 
 
-    // Test error (comentar codigo anterior y descomentar/comentar segun el caso a testear)
+    // Test error
     //await productManager.addProduct(newProduct) // Agregar mismo producto (mismo codigo)
+    //await productManager.addProduct({title: 'prod', description:'descripcion', price:1500, thumbnail:'www.com'}) // Agregar un producto con diferente cantidad de campos
     //await productManager.getProductById(99) // Buscar por un ID incorrecto
     //await productManager.updateProduct(99, updatedProduct) // Actualizar producto inexistente
-    //await productManager.deleteProducts(99) // Eliminar Producto inexistente
+    //await productManager.deleteProducts(99) // Eliminar producto inexistente
     
 }
-
 testProductManager()
