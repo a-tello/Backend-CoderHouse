@@ -10,19 +10,19 @@ app.get('/', (req, res) => {
     res.send('Hola')
 }
 )
-app.get('/products', async (req, res) => {
+/* app.get('/products', async (req, res) => {
     const products = await productManager.getProducts()
     const limit = req.query.limit
 
     if(!limit) res.send(products)
     res.send(products.slice(0, limit))
-})
+}) */
 
 app.get('/products/:pid', async (req, res) => {
     const products = await productManager.getProducts()
     const {pid} = req.params
 
-    if(!pid) res.send(products)
+    //if(!pid) res.send(products)
     res.send(products.filter((prod) => prod.id === pid ))
 
 })
