@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "title": "Celular TCL 30 SE",
+        "description": "TCL 30 SE 128 GB space gray 4 GB RAM",
+        "price": 41500,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_620277-MLA51777854599_092022-O.webp",
+        "code": "tec001",
+        "stock": 250
+    },
+    {
+        "id": 2,
+        "title": "Aire acondicionado Hitachi",
+        "description": "Aire Acondicionado Hitachi Split Inverter Frío/calor 5300 Watts Blanco 220v Hsfy5300fcinv",
+        "price": 276000,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_843515-MLA51916018174_102022-O.webp",
+        "code": "elec001",
+        "stock": 10
+    },
+    {
+        "id": 3,
+        "title": "Ventilador Liliana",
+        "description": "Ventilador de pared y de piso Liliana VTF20P negro con 5 palas de plástico",
+        "price": 12800,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_922038-MLA45170088823_032021-O.webp",
+        "code": "elec002",
+        "stock": 100
+    },
+    {
+        "id": 4,
+        "title": "Smart Tv 39 pulgadas",
+        "description": "Smart Tv Noblex 39 Pulgadas Db39x7000 Hd Android Tv",
+        "price": 58500,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_807983-MLA53145382859_012023-O.webp",
+        "code": "elec003",
+        "stock": 50
+    },
+    {
+        "id": 5,
+        "title": "Zapatillas Puma",
+        "description": "Zapatillas Flyer Flex Puma Puma Tienda Oficial",
+        "price": 17000,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_991627-MLA48955483427_012022-O.webp",
+        "code": "ind001",
+        "stock": 65
+    },
+    {
+        "id": 6,
+        "title": "Heladera Gafa",
+        "description": "Heladera Gafa HGF388AFB blanca con freezer 374L 220V",
+        "price": 174300,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_718360-MLA52315524620_112022-O.webp",
+        "code": "elec004",
+        "stock": 10
+    },
+    {
+        "id": 7,
+        "title": "Smartwatch Microwear",
+        "description": "Smartwatch Microwear Series 6 W26+ Plus caja 40mm black, malla black",
+        "price": 6540,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_882026-MLA48592432565_122021-O.webp",
+        "code": "tec002",
+        "stock": 30
+    },
+    {
+        "id": 8,
+        "title": "Lavarropas Drean",
+        "description": "Lavarropas automático Drean Concept 5.05 blanco 5kg 220 V",
+        "price": 79880,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_655186-MLA44666435804_012021-O.webp",
+        "code": "elec005",
+        "stock": 20
+    },
+    {
+        "id": 9,
+        "title": "Neumatico Fate",
+        "description": "Neumatico Fate At/r S4 225 70 R17 108s Toyota Hilux Cavalino",
+        "price": 110180,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_772906-MLA51092106920_082022-O.webp",
+        "code": "auto001",
+        "stock": 5
+    },
+    {
+        "id": 10,
+        "title": "Ambo medico",
+        "description": "Ambos Médicos Unisex Tela Tipo Acrocel - Excelente Calidad",
+        "price": 4840,
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_628345-MLA43739845007_102020-O.webp",
+        "code": "ind002",
+        "stock": 30
+    }
+]
