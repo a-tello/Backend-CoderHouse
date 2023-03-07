@@ -5,11 +5,17 @@ const app = express()
 const productManager = new ProductManager('products.json')
 
 app.get('/products', async (req, res) => {
-    const products = await productManager.getProducts()
     const {limit} = req.query
+    
+    try {
+        const products = await productManager.getProducts()
+    
+        if(!limit) return res.status(200).json(products)
+        res.status(200).json(products.slice(0, limit))
 
-    if(!limit) return res.status(200).json(products)
-    res.status(200).json(products.slice(0, limit))
+    } catch(error) {
+
+    }
 })
 
 app.get('/products/:pid', async (req, res) => {
