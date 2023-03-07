@@ -21,7 +21,7 @@ class ProductManager {
         const newProduct = { id, ...product }
 
         products.push(newProduct)
-        await fs.promises.writeFile(this.path, JSON.stringify(products))
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
     }
 
     async getProducts() {
@@ -46,14 +46,14 @@ class ProductManager {
         const updatedProduct = {...products[productIndex], ...productValues}
 
         products.splice(productIndex, 1, updatedProduct)
-        await fs.promises.writeFile(this.path, JSON.stringify(products))
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
     }
 
     async deleteProducts(productId) {
         const products = await this.getProducts()
         const newProductList = products.filter((product) => product.id !== productId)
 
-        await fs.promises.writeFile(this.path, JSON.stringify(newProductList))
+        await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
     }
 
     #productExists(products, productCode) {
