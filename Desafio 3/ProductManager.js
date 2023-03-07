@@ -36,7 +36,7 @@ class ProductManager {
         const products = await this.getProducts()
         const product =  products.find((product) => product.id === productId)
         
-        if (!product) throw new Error('Not found') 
+        if (!product) throw new Error('Product not found') 
         return product
     }
 
