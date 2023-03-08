@@ -14,7 +14,7 @@ app.get('/products', async (req, res) => {
         res.status(200).json(products.slice(0, limit))
 
     } catch(error) {
-
+        res.status(400).json({error: error.message})
     }
 })
 
