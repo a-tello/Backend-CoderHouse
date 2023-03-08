@@ -6,6 +6,10 @@ class ProductManager {
     }
 
     async addProduct(product) {
+        if (!fs.existsSync(this.path)) {
+            await fs.promises.writeFile('products.json', JSON.stringify([]))
+        }
+
         if(Object.keys(product).length != 6) {
             throw new Error('All fields are required!')
         }
@@ -25,11 +29,13 @@ class ProductManager {
     }
 
     async getProducts() {
-        if (fs.existsSync(this.path)) {
+        
+        try {
             const products = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             return products
+        } catch {
+            throw new Error('Cannot return products')
         }
-        return []
     }
 
     async getProductById(productId) {
@@ -56,6 +62,7 @@ class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
     }
 
+    
     #productExists(products, productCode) {
         return products.find((product) => product.code === productCode)
     }
