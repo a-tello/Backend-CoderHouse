@@ -14,7 +14,7 @@ app.get('/products', async (req, res) => {
         res.status(200).json(products.slice(0, limit))
 
     } catch(error) {
-        res.status(400).json({error: error.message})
+        res.status(error.code).json({error: error.message})
     }
 })
 
@@ -25,7 +25,7 @@ app.get('/products/:pid', async (req, res) => {
         const product = await productManager.getProductById(+pid) 
         res.status(200).json(product)
     } catch(error) {
-        res.status(400).json({error: error.message})
+        res.status(error.code).json({error: error.message})
     } 
 })
 

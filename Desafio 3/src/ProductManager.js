@@ -34,7 +34,9 @@ class ProductManager {
             const products = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             return products
         } catch {
-            throw new Error('Cannot return products')
+            const error = new Error('Products not found')
+            error.code = 404 
+            throw error
         }
     }
 
@@ -42,7 +44,12 @@ class ProductManager {
         const products = await this.getProducts()
         const product =  products.find((product) => product.id === productId)
         
-        if (!product) throw new Error('Product not found') 
+        if (!product) {
+            const error = new Error('Product not found')
+            error.code = 404 
+            throw error
+        }
+
         return product
     }
 
