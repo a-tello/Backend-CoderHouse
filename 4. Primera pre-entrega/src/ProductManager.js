@@ -114,7 +114,7 @@ class ProductManager {
     }
 
     #validateProduct(product) {
-        const fields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category']
+        const fields = ['title', 'description', 'code', 'price', 'stock', 'category']
         fields.forEach((field) => {
             if (!product.hasOwnProperty(field)) {
                 const error = new Error(`'${field}' field is required`)
