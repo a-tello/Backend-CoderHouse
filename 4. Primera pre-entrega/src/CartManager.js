@@ -1,6 +1,8 @@
 import fs from 'fs'
+import ProductManager from './ProductManager.js'
 
 const PATH = 'carts.json'
+const PATH_PRODUCTS = 'products.json'
 
 class CartManager {
     constructor(path) {
@@ -58,6 +60,14 @@ class CartManager {
         if (cartIndex == -1) {
             const error = new Error('Cart not found')
             error.code = 404
+            throw error
+        }
+
+        const productManager = new ProductManager(PATH_PRODUCTS)
+
+        try {
+            await productManager.getProductById(productId)
+        } catch (error) {
             throw error
         }
 
