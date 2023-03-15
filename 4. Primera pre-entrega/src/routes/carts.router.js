@@ -18,7 +18,7 @@ router.get('/:cid', async (req, res) => {
         
     try {
         const cart = await cartManager.getCartById(+cid) 
-        res.status(200).json(cart)
+        res.status(200).json(cart.products)
     } catch(error) {
         res.status(error.code).json({error: error.message})
     } 
