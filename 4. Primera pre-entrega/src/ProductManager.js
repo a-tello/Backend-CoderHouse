@@ -10,8 +10,10 @@ class ProductManager {
             await fs.promises.writeFile('products.json', JSON.stringify([]))
         }
 
-        if(Object.keys(product).length != 6) {
-            throw new Error('All fields are required!')
+        try {
+            this.#validateProduct(product)
+        } catch (error) {
+            throw error
         }
 
         const products = await this.getProducts()
@@ -24,10 +26,14 @@ class ProductManager {
         }
 
         const id = this.#generateId(products)
-        const newProduct = { id, ...product }
+        const newProduct = { id, ...product, 'status':true}
 
         products.push(newProduct)
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
+        try {
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
+        } catch(error) {
+            throw error
+        }
     }
 
     async getProducts() {
@@ -47,7 +53,7 @@ class ProductManager {
         const product =  products.find((product) => product.id === productId)
         
         if (!product) {
-            const error = new Error('Product not found')
+            const error = new Error(`Product with id ${productId} not found`)
             error.code = 404 
             throw error
         }
@@ -65,7 +71,8 @@ class ProductManager {
             throw error
         }
 
-        const updatedProduct = {...products[productIndex], ...productValues}
+        const id = products[productIndex].id
+        const updatedProduct = {...products[productIndex], ...productValues, id}
         
         products.splice(productIndex, 1, updatedProduct)
         try {
@@ -106,7 +113,17 @@ class ProductManager {
         await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
     }
 
-    
+    #validateProduct(product) {
+        const fields = ['title', 'description', 'code', 'price', 'status', 'stock', 'category']
+        fields.forEach((field) => {
+            if (!product.hasOwnProperty(field)) {
+                const error = new Error(`'${field}' field is required`)
+                error.code = 400
+                throw error
+            }
+        })
+    }
+
     #productExists(products, productCode) {
         return products.find((product) => product.code === productCode)
     }
