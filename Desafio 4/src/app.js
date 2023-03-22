@@ -33,7 +33,6 @@ socketServer.on('connection', async (socket) => {
     socket.emit('showProducts', products)
     
     socket.on('addProduct', async product => {
-        console.log(product);
         await productManager.addProduct(product)
         const updatedProducts = await productManager.getProducts()
         socketServer.emit('showProducts', updatedProducts)
@@ -45,8 +44,8 @@ socketServer.on('connection', async (socket) => {
         socketServer.emit('showProducts', updatedProducts)
     })
 
-    socket.on('disconnect', (reason) => {
-        console.log(reason);
+    socket.on('disconnect', () => {
+        console.log(`${socket.id} disconnected`)
     })
 
 })
