@@ -24,20 +24,30 @@ const httpServer = app.listen(PORT, () => {
 })
 
 const socketServer = new Server(httpServer)
+const arrayProducts = []
 
 socketServer.on('connection', async (socket) => {
     console.log(`${socket.id} connected`)
 
     const products = await productManager.getProducts()
-    socket.emit('initialLoad', products)
+    socket.emit('showProducts', products)
     
-    socket.on('disconnect', () => {
-        console.log(`${socket.id} disconnected`);
-    })
-
     socket.on('addProduct', async product => {
         console.log(product);
         await productManager.addProduct(product)
+        const updatedProducts = await productManager.getProducts()
+        socketServer.emit('showProducts', updatedProducts)
     })
+
+    socket.on('deleteProduct', async (idProduct) => {
+        await productManager.deleteProductById(+idProduct)
+        const updatedProducts = await productManager.getProducts()
+        socketServer.emit('showProducts', updatedProducts)
+    })
+
+    socket.on('disconnect', (reason) => {
+        console.log(reason);
+    })
+
 })
 
