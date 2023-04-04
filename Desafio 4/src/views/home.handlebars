@@ -1,4 +1,21 @@
-<h2>HANDLEBARS</h2>
-
-<script src='/socket.io/socket.io.js'></script>
-<script src='js/index.js'></script>
+{{#if products.length}}
+<div style="display: flex;flex-wrap:wrap; gap: 20px">
+{{#each products}}
+    <div>
+        <p><strong>ID</strong>: {{id}}</p>
+        <p><strong>Nombre:</strong> {{title}}</p>
+        <p><strong>Descripcion:</strong> {{description}}</p>
+        <p><strong>Precio:</strong> {{price}}</p>
+        <p><strong>Imagen:</strong> {{thumbnail}}</p>
+        <p><strong>Codigo:</strong> {{code}}</p>
+        <p><strong>Stock:</strong> {{stock}}</p>
+        <p><strong>Categoria:</strong> {{category}}</p>
+    </div>
+    <br>
+    <hr>
+{{/each}}
+</div>
+{{else}}
+<h2>No hay productos para mostrar.</h2>
+{{/if}}
+<p><strong>*Actualice para mostrar cambios</strong></p>

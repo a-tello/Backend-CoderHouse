@@ -21,20 +21,31 @@ const resetForm = () =>{
     category.value = ''
 }
 
-socketClient.on('initialLoad', products => {
+socketClient.on('showProducts', products => {
     const productList = products.map(product => {
-        return `<p>${product.id}</p>
-        <p>${product.title}</p>
-        <p>${product.description}</p>
-        <p>${product.price}</p>
-        <p>${product.thumbnail}</p>
-        <p>${product.code}</p>
-        <p>${product.stock}</p>
-        <p>${product.category}</p>
-        <hr>
+        return `<div><p><strong>ID</strong>: ${product.id}</p>
+        <p><strong>Nombre:</strong> ${product.title}</p>
+        <p><strong>Descripcion:</strong> ${product.description}</p>
+        <p><strong>Precio:</strong> ${product.price}</p>
+        <p><strong>Imagen:</strong> ${product.thumbnail}</p>
+        <p><strong>Codigo:</strong> ${product.code}</p>
+        <p><strong>Stock:</strong> ${product.stock}</p>
+        <p><strong>Categoria:</strong> ${product.category}</p></div>
+        <button class='delete-button' data-id="${product.id}">ELIMINAR PRODUCTO</button><hr>
         `
     }).join(' ')
     divProducts.innerHTML = productList
+
+    const deleteButton = document.querySelectorAll('.delete-button')
+    deleteButton.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const idProduct = e.target.getAttribute('data-id')
+        socketClient.emit('deleteProduct', idProduct)
+      })
+    })
+        
+
+   
 })
 
 
@@ -52,3 +63,4 @@ form.onsubmit = (e) => {
     resetForm()
     socketClient.emit('addProduct', product)
 }
+
