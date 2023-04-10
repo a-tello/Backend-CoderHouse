@@ -1,12 +1,12 @@
 import fs from 'fs'
-import ProductManager from './ProductManager.js'
+import ProductManager from './productManagerFS.js'
 
 const PATH = 'carts.json'
 const PATH_PRODUCTS = 'products.json'
 
 class CartManager {
-    constructor(path) {
-        this.path = path
+    constructor() {
+        this.path = PATH
     }
 
     async addCart () {
@@ -88,62 +88,6 @@ class CartManager {
         }
     }
 
-    
-/*
-    
-
-    async updateProduct(productId, productValues) {
-        const products = await this.getProducts()
-        const productIndex = products.findIndex((product) => product.id === productId )
-
-        if (productIndex == -1) {
-            const error = new Error('Product not found')
-            error.code = 404
-            throw error
-        }
-
-        const updatedProduct = {...products[productIndex], ...productValues}
-        
-        products.splice(productIndex, 1, updatedProduct)
-        try {
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
-            return updatedProduct
-        } catch {
-            const error = new Error('Can not update product')
-            error.code = 400
-            throw error
-        }
-        
-    }
-
-    async deleteProductById(productId) {
-        const products = await this.getProducts()
-        const productIndex = products.findIndex((product) => product.id === productId )
-
-        if (productIndex == -1) {
-            const error = new Error('Product not found')
-            error.code = 404
-            throw error
-        }
-        
-        products.splice(productIndex, 1)
-        try {
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
-        } catch {
-            const error = new Error('Cannot delete product')
-            error.code = 400
-            throw error
-        }
-    }
-
-    async deleteProducts(productId) {
-        const products = await this.getProducts()
-        const newProductList = products.filter((product) => product.id !== productId)
-
-        await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
-    }
-
-    */
     #productExistsInCart(cart, productId) {
         return cart.products.findIndex((product) => product.product === productId)
     } 

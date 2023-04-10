@@ -1,14 +1,13 @@
 import fs from 'fs'
 
+const PATH = 'products.json'
+
 class ProductManager {
-    constructor(path) {
-        this.path = path
+    constructor() {
+        this.path = PATH
     }
 
     async addProduct(product) {
-        if (!fs.existsSync(this.path)) {
-            await fs.promises.writeFile('products.json', JSON.stringify([]))
-        }
 
         try {
             this.#validateProduct(product)
@@ -36,22 +35,27 @@ class ProductManager {
         }
     }
 
-    async getProducts() {
+    async getProducts(limit) {
         
         try {
             if (!fs.existsSync(this.path)) {
                 await fs.promises.writeFile('products.json', JSON.stringify([]))
             }
             const products = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-            return products
-        } catch {
+
+            if(!limit) return products
+            return products.slice(0, limit) 
+
+        } catch(err) {
             const error = new Error('Products not found')
-            error.code = 404 
-            throw error
+            err.code = 404 
+            throw err
         }
     }
 
     async getProductById(productId) {
+        productId = parseInt(productId)
+        
         const products = await this.getProducts()
         const product =  products.find((product) => product.id === productId)
         
@@ -65,6 +69,7 @@ class ProductManager {
     }
 
     async updateProduct(productId, productValues) {
+        productId = parseInt(productId)
         const products = await this.getProducts()
         const productIndex = products.findIndex((product) => product.id === productId )
 
@@ -90,6 +95,7 @@ class ProductManager {
     }
 
     async deleteProductById(productId) {
+        productId = parseInt(productId)
         const products = await this.getProducts()
         const productIndex = products.findIndex((product) => product.id === productId )
 
