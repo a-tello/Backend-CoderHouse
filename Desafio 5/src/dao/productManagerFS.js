@@ -108,6 +108,7 @@ class ProductManager {
         products.splice(productIndex, 1)
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, 4))
+            return true
         } catch {
             const error = new Error('Cannot delete product')
             error.code = 400

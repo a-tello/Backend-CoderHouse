@@ -7,6 +7,7 @@ import cartsRouter from './routes/carts.router.js'
 import chatRouter from './routes/chat.router.js'
 import { Server } from 'socket.io'
 import MessageManager from './dao/messagesManagerMongo.js'
+import { messagesModel } from './db/models/messages.model.js'
 
 const PORT = 8080
 const app = express()
@@ -41,22 +42,10 @@ socketServer.on('connection', async (socket) => {
         const updatedMessages = await messageManager.getMessages()
         socketServer.emit('chat', updatedMessages)
     })
-    /* const products = await productManager.getProducts()
-    socket.emit('showProducts', products)
-    
-    
-    
-    socket.on('addProduct', async product => {
-        await productManager.addProduct(product)
-        const updatedProducts = await productManager.getProducts()
-        socketServer.emit('showProducts', updatedProducts)
-    })
 
-    socket.on('deleteProduct', async (idProduct) => {
-        await productManager.deleteProductById(+idProduct)
-        const updatedProducts = await productManager.getProducts()
-        socketServer.emit('showProducts', updatedProducts)
-    }) */
+    socket.on('userConnected', username => {
+        socket.broadcast.emit('alertUserConnected', username)
+    })
 
     socket.on('disconnect', () => {
         console.log(`${socket.id} disconnected`)

@@ -19,6 +19,8 @@ Swal.fire({
 .then(usuario => {
     username = usuario.value
     user.innerHTML = `Conectado como ${username}`
+
+    socketClient.emit('userConnected', username)
 })
 
 
@@ -30,13 +32,27 @@ form.onsubmit = (e) => {
         message: message.value
     }
     socketClient.emit('message', info)
+    message.value = ''
+    
 }
 
 socketClient.on('chat', messages => {
     
     const chatMessages = messages.map(info => {
-        return `<p>${info.user}: ${info.message}</p>`
+        return `<p class="message">${info.user}: ${info.message}</p>`
     }).join(' ')
 
     chat.innerHTML = chatMessages
+})
+
+
+socketClient.on('alertUserConnected', username => {
+    Toastify({
+        text: `${username} se ha conectado`,
+        duration: 3000,
+        position: "right", 
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+      }).showToast();
 })

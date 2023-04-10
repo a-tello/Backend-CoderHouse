@@ -2,7 +2,6 @@ import { Router } from 'express'
 import CartManager from '../dao/cartManagerMongo.js '
 //import CartManager from '../dao/cartManagerFS.js'
 
-//const productManager = new ProductManager('products.json')
 const cartManager = new CartManager()
 const router = Router()
 
@@ -11,7 +10,7 @@ router.post('/', async (req, res) => {
 
     try{
         const newCart = await cartManager.addCart()
-        res.status(201).json({'message': `Cart created successfully with ID ${newCart._id}`})
+        res.status(201).json({'message': 'Cart created successfully', cart: newCart})
     } catch(err) {
         res.status(400).json({error: err.message})
     }
@@ -36,8 +35,7 @@ router.post('/:cid/products/:pid', async (req, res) => {
     
     try {
         const cart = await cartManager.addProductToCart(cid, pid) 
-        //res.status(201).json({'message': 'Product successfully added to cart '})
-        res.status(201).json({cart})
+        res.status(201).json({'message': 'Product added successfully', cart})
     } catch(error) {
         res.status(400).json({error: error.message})
     } 

@@ -8,7 +8,6 @@ export default class MessageManager {
             return newMessage
         }
         catch(err) {
-            console.log(err);
         }
     }
     
@@ -18,10 +17,15 @@ export default class MessageManager {
             return messages
         }
         catch(err) {
-            console.log(err);
         }
     }
 
-    
+    async clearMessages() {
+        try {
+            await messagesModel.deleteMany({})
+        } catch (error) {
+            
+        }
+    }
 
 }

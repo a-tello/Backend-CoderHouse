@@ -20,6 +20,7 @@ class CartManager {
         carts.push(newCart)
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 4))
+            return newCart
         } catch {
             throw new Error
         }
@@ -39,6 +40,7 @@ class CartManager {
     }
 
     async getCartById(cartId) {
+        cartId = parseInt(cartId)
         const carts = await this.getCarts()
         const cart =  carts.find((cart) => cart.id === cartId)
         
@@ -53,6 +55,9 @@ class CartManager {
 
 
     async addProductToCart(cartId, productId) {
+        cartId = parseInt(cartId)
+        productId = parseInt(productId)
+
         const carts = await this.getCarts()
 
         const cartIndex = carts.findIndex((cart) => cart.id === cartId)
@@ -81,6 +86,7 @@ class CartManager {
 
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 4))
+            return carts[cartIndex]
         } catch {
             const error = new Error('Can not add product to cart')
             error.code = 400
