@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose'
+import mongoose from 'mongoose'
 
 const productsSchema = new mongoose.Schema({
     title: {
@@ -15,7 +15,6 @@ const productsSchema = new mongoose.Schema({
     },
     thumbnail: {
         type: String,
-        required:true
     },
     code: {
         type: String,
@@ -31,7 +30,7 @@ const productsSchema = new mongoose.Schema({
         required:true
     },
     status: {
-        type: String,
+        type: Boolean,
         required:true
     }
 })
