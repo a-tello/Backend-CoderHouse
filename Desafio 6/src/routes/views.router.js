@@ -11,7 +11,8 @@ router.get('/products', async (req, res) => {
     
     try {
         const products = await productManager.getProducts(limit, page, query, sort)
-        res.render('products',{style:'products.css', products:products.payload})
+   
+        res.render('products',{style:'products.css', products:products.payload, user:req.session})
         
     } catch(error) {
         res.status(error.code).json({error: error.message})
@@ -32,11 +33,25 @@ router.get('/carts/:cid', async (req, res) => {
 })
 
 router.get('/login',  (req, res) => {
+    if(req.session?.email) {
+        res.redirect('/views/products')
+    }
     res.render('login')
 })
 
 router.get('/signup',  (req, res) => {
+    if(req.session?.email) {
+        res.redirect('/views/products')
+    }
     res.render('signup')
+})
+
+router.get('/profile',  (req, res) => {
+    res.render('profile', {user:req.session})
+})
+
+router.get('/error',  (req, res) => {
+    res.render('error')
 })
 
 

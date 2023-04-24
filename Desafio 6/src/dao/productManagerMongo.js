@@ -35,7 +35,6 @@ export default class ProductManager {
                 prevLink: products.hasPrevPage ? `localhost:8080/products?page=${products.prevPage}` : null, 
                 nextLink: products.hasNextPage ? `localhost:8080/products?page=${products.nextPage}` : null
             }
-            console.log(info);
             return info
         }
         catch(err) {

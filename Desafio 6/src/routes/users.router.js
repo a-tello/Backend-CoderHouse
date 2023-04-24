@@ -10,18 +10,30 @@ router.post('/signup',  async (req, res) => {
     if(newUser) {
         res.redirect('/views/login')
     } else{
-        res.json({'message': 'error'})
+        res.redirect('/views/error')
+    }
+})
+
+router.post('/login',  async (req, res) => {
+    
+    const {email, password} = req.body
+    const user = await userManager.loginUser(req.body)
+    if(user) {
+        req.session.email = email
+        req.session.password = password
+        req.session.firstName = user._doc.firstName
+        req.session.lastName = user._doc.lastName
+        req.session.role = user.role
+        res.redirect('/views/products')
+    } else{
+        res.redirect('/views/error')
     }
 })
 
 router.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-
-        if(err) res.json({message: err})
-        else res.json({message: 'Sesion eliminada'})
+    req.session.destroy(() => {
+        res.redirect('/views/login')
     })
-
-    res.json({message: 'conected'})
 })
 
 
