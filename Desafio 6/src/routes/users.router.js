@@ -23,6 +23,7 @@ router.post('/login',  async (req, res) => {
         req.session.password = password
         req.session.firstName = user._doc.firstName
         req.session.lastName = user._doc.lastName
+        req.session.age = user._doc.age
         req.session.role = user.role
         res.redirect('/views/products')
     } else{
