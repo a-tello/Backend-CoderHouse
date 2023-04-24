@@ -1,10 +1,12 @@
-<h1>Ingrese a la tienda</h1>
+<div class="login-container">
+    <h1>Ingrese a la tienda de AQ</h1>
 
-<form action='/api/users/login' method='post'>
-    <input type='email' name='email' id='email' placeholder='Email'> 
-    <input type='password' name='password' id='password' placeholder='Contraseña'> 
-    <input type='submit' value='Ingresar'> 
-</form>
+    <form action='/api/users/login' method='post' class="login-form">
+        <input type='email' name='email' id='email' placeholder='Email' required> 
+        <input type='password' name='password' id='password' placeholder='Contraseña' required>
+        <br>
+        <input type='submit' value='Ingresar'> 
+    </form>
 
-<h2>Registar nuevo usuario</h2>
-<button onclick='location.href="/views/signup"'>Registarse</button>
+    <a href="/views/signup">¿No tienes cuenta? Crea una</a>
+</div>

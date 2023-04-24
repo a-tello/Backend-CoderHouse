@@ -36,6 +36,9 @@ router.get('/login',  (req, res) => {
     if(req.session?.email) {
         res.redirect('/views/products')
     }
+    if(req.session?.err){
+        delete req.session.err
+    }
     res.render('login')
 })
 
@@ -43,15 +46,22 @@ router.get('/signup',  (req, res) => {
     if(req.session?.email) {
         res.redirect('/views/products')
     }
+    if(req.session?.err){
+        delete req.session.err
+    }
     res.render('signup')
 })
 
 router.get('/profile',  (req, res) => {
+    if(!req.session?.email) {
+        res.redirect('/views/login')
+        return
+    }
     res.render('profile', {user:req.session})
 })
 
 router.get('/error',  (req, res) => {
-    res.render('error')
+    res.render('error', {err: req.session.err})
 })
 
 

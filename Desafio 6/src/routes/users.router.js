@@ -10,12 +10,13 @@ router.post('/signup',  async (req, res) => {
     if(newUser) {
         res.redirect('/views/login')
     } else{
+        req.session.err = `El mail ${req.body.email} ya se encuentra registrado`
         res.redirect('/views/error')
     }
 })
 
 router.post('/login',  async (req, res) => {
-    
+
     const {email, password} = req.body
     const user = await userManager.loginUser(req.body)
     if(user) {
@@ -27,6 +28,7 @@ router.post('/login',  async (req, res) => {
         req.session.role = user.role
         res.redirect('/views/products')
     } else{
+        req.session.err = "Usuario o contraseña incorrectos"
         res.redirect('/views/error')
     }
 })
