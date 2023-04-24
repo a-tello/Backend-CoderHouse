@@ -17,7 +17,6 @@ export default class ProductManager {
         try {
             page = parseInt(page)
             const products = await productsModel.paginate(query,{limit, page, sort: {price: sort}, lean:true, leanWithId: false})
-            console.log(products);
             if (page > products.totalPages || isNaN(page)) {
                 const err = new Error
                 err.message = "That page doesn't exist"
