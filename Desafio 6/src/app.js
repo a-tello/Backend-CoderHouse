@@ -40,6 +40,10 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
+
+app.get('/', (req, res) => {
+    res.redirect('/views/login')
+})
 app.use('api/products', productsRouter)
 app.use('api/carts', cartsRouter)
 app.use('api/chat', chatRouter)

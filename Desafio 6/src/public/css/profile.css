@@ -12,3 +12,9 @@
 .profile-info span {
     padding: 10px;
 }
+
+.back-profile-btn, .logout-profile-btn {
+    font-size: 1.1rem;
+    padding: 10px;
+    margin: 5px 10px;
+}

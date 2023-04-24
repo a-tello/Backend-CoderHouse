@@ -22,9 +22,9 @@ router.post('/login',  async (req, res) => {
     if(user) {
         req.session.email = email
         req.session.password = password
-        req.session.firstName = user._doc.firstName
-        req.session.lastName = user._doc.lastName
-        req.session.age = user._doc.age
+        req.session.firstName = user.firstName
+        req.session.lastName = user.lastName
+        req.session.age = user.age
         req.session.role = user.role
         res.redirect('/views/products')
     } else{

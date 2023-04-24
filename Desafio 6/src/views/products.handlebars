@@ -11,9 +11,11 @@
     </a>
 </nav>
 {{/with}}
+{{#if user.firstName}}<h2 class="welcome-message">{{user.firstName}}, bienvenido/a a la tienda de AQ!</h2>{{/if}}
 
 
-<h1 class="title">PRODUCTOS</h1>
+
+<h2 class="title">PRODUCTOS</h2>
 {{#if products.length}}
 <div class='product-container'>
 {{#each products}}

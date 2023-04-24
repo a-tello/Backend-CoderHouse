@@ -16,10 +16,13 @@ export default class UserManager {
 
     async loginUser(userData) {
         const {email, password} = userData
+
+        if(await this.#isAdmin(email,password)) return {firstName: 'Admin', lastName: '-', age: '-', email: email, password: password, role: 'Administrador'}
+
         const user = await userModel.find({email, password})
 
         if(user.length !== 0) {
-            return await this.#isAdmin(email, password) ? {...user[0], 'role':'Administrador'} : {...user[0], 'role':'Usuario'}
+            return {...user[0]._doc, 'role':'Usuario'}
         } else {
             return null
         }

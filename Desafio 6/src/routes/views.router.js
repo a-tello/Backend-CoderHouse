@@ -61,6 +61,9 @@ router.get('/profile',  (req, res) => {
 })
 
 router.get('/error',  (req, res) => {
+    if(req.session?.email) {
+        res.redirect('/views/products')
+    }
     res.render('error', {err: req.session.err})
 })
 
