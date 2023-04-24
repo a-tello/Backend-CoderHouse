@@ -6,14 +6,33 @@ import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
 import chatRouter from './routes/chat.router.js'
 import viewsRouter from './routes/views.router.js'
+import usersRouter from './routes/users.router.js'
 import { Server } from 'socket.io'
 import MessageManager from './dao/messagesManagerMongo.js'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+import mongoStore from 'connect-mongo'
+
 
 const PORT = 8080
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+app.use(cookieParser())
+
+
+app.use(
+    session({
+        secret: 'sessionKey',
+        resave: false,
+        saveUninitialized: true,
+        store: new mongoStore({
+            mongoUrl: 'mongodb+srv://atello:D8YMIQ2LKtW6VSmp@cluster0.90kpthn.mongodb.net/ecommerce?retryWrites=true&w=majority'
+        })
+    })
+)
+
  
 app.use(express.static(__dirname + '/public'))
 
@@ -24,7 +43,8 @@ app.set('view engine', 'handlebars')
 app.use('api/products', productsRouter)
 app.use('api/carts', cartsRouter)
 app.use('api/chat', chatRouter)
-app.use('api/views', viewsRouter)
+app.use('/views', viewsRouter)
+app.use('/users', usersRouter)
 
 
 
