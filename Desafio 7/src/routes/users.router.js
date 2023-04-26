@@ -1,12 +1,15 @@
 import { Router } from "express"
 import UserManager from "../dao/userManager.js"
+import { compareData, hashData } from "../utils.js"
 
 const router = Router()
 const userManager = new UserManager()
 
 router.post('/signup',  async (req, res) => {
     
-    const newUser = await userManager.createUser(req.body)
+    const hashPassword = await hashData(req.body.password)
+    const userData = {...req.body, password: hashPassword}
+    const newUser = await userManager.createUser(userData)
     if(newUser) {
         res.redirect('/views/login')
     } else{
@@ -17,11 +20,10 @@ router.post('/signup',  async (req, res) => {
 
 router.post('/login',  async (req, res) => {
 
-    const {email, password} = req.body
     const user = await userManager.loginUser(req.body)
-    if(user) {
-        req.session.email = email
-        req.session.password = password
+    if(user && await compareData(req.body.password, user.password)) {
+        req.session.email = user.email
+        req.session.password = user.password
         req.session.firstName = user.firstName
         req.session.lastName = user.lastName
         req.session.age = user.age

@@ -19,7 +19,7 @@ export default class UserManager {
 
         if(await this.#isAdmin(email,password)) return {firstName: 'Admin', lastName: '-', age: '-', email: email, password: password, role: 'Administrador'}
 
-        const user = await userModel.find({email, password})
+        const user = await userModel.find({email})
 
         if(user.length !== 0) {
             return {...user[0]._doc, 'role':'Usuario'}
