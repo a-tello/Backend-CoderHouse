@@ -6,22 +6,22 @@ import passport from "passport"
 const router = Router()
 const userManager = new UserManager()
 
-router.post('/signup',  async (req, res) => {
-    
-    const hashPassword = await hashData(req.body.password)
-    const userData = {...req.body, password: hashPassword}
-    const newUser = await userManager.createUser(userData)
-    if(newUser) {
-        res.redirect('/views/login')
-    } else{
-        req.session.messages = [`El mail ${req.body.email} ya se encuentra registrado`]
-        res.redirect('/views/error')
-    }
-})
+router.post('/signup',  passport.authenticate('signup', {
+    failureRedirect: '/views/error',
+    failureMessage: `El mail ya se encuentra registrado`,
+    successRedirect: '/views/login',
+    session:false
+}))
 
-router.post('/login',  passport.authenticate('local', {
+router.post('/login',  passport.authenticate('login', {
     failureRedirect: '/views/error',
     failureMessage: 'Usuario o contraseña incorrectos',
+    successRedirect: '/views/products'  
+}))
+
+
+router.get('/signup/github',passport.authenticate('github', { scope: [ 'user:email' ] }));
+router.get('/github',  passport.authenticate('github', {
     successRedirect: '/views/products'
 }))
 

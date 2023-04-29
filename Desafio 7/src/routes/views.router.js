@@ -7,10 +7,11 @@ const productManager = new ProductManager
 const cartManager = new CartManager
 
 router.get('/products', async (req, res) => {
-    const {limit=10, page=1, sort=null,...query} = req.query
+    const {limit=10, page=1, sort=null, code=null, ...query} = req.query
     
     try {
         const products = await productManager.getProducts(limit, page, query, sort)
+        console.log(req.user);
         res.render('products',{style:'products.css', products:products.payload, user:req.user})
         
     } catch(error) {
@@ -32,7 +33,7 @@ router.get('/carts/:cid', async (req, res) => {
 })
 
 router.get('/login',  (req, res) => {
-    if(req.user?.email) {
+    if(req.session?.passport) {
         return res.redirect('/views/products')
     }
     if(req.session?.messages){
