@@ -1,3 +1,8 @@
+.products-main-container {
+    display: flex;
+    flex-direction: column;
+}
+
 nav {
     background-color: rgb(21, 21, 155);
     color: white;

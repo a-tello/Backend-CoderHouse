@@ -6,9 +6,9 @@
 
 body {
     height: 100vh;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
 }

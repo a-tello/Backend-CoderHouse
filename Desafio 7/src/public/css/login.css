@@ -55,3 +55,11 @@
 .login-signup-link:hover {
 	text-decoration:underline;	
 }
+
+.login-github {
+    display: flex;
+    text-decoration: none;
+    color: rgb(143, 143, 143);
+    align-items: center;
+    border: 1px solid rgb(143, 143, 143);
+}
