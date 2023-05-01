@@ -11,7 +11,6 @@ router.get('/products', async (req, res) => {
     
     try {
         const products = await productManager.getProducts(limit, page, query, sort)
-        console.log(req.user);
         res.render('products',{style:'products.css', products:products.payload, user:req.user})
         
     } catch(error) {
