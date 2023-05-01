@@ -41,11 +41,11 @@ passport.use('github', new GitHubStrategy({
     },
       async (accessToken, refreshToken, profile, done) => {
         const user = {
-            firstName: profile._json.name.split(' ')[0] || 'a ',
-            lastName: profile._json.name.split(' ')[1] || 'a ',
-            email: profile._json.email || 'a ',
-            password: 'a ',
-            age: 16,
+            firstName: profile._json.name.split(' ')[0] || ' ',
+            lastName: profile._json.name.split(' ')[1] || ' ',
+            email: profile._json.email || ' ',
+            password: ' ',
+            age: 0  ,
             role: 'Usuario'
         }
         const newUser = await userModel.create(user)
