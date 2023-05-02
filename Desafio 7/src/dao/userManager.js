@@ -1,4 +1,5 @@
 import { userModel } from "../db/models/users.model.js";
+import { compareData } from "../utils.js";
 
 export default class UserManager {
    
@@ -9,7 +10,7 @@ export default class UserManager {
         if(userExists.length !== 0) {
             return null
         } else {
-            const newUser = userModel.create(user)
+            const newUser = userModel.create({...user, role: 'Usuario'})
             return newUser
         }
     }
@@ -19,10 +20,9 @@ export default class UserManager {
 
         if(await this.#isAdmin(email,password)) return {firstName: 'Admin', lastName: '-', age: '-', email: email, password: password, role: 'Administrador'}
 
-        const user = await userModel.find({email})
-
-        if(user.length !== 0) {
-            return {...user[0]._doc, 'role':'Usuario'}
+        const user = await userModel.find({email}).lean()
+        if(user.length !== 0 && await compareData(password, user[0].password)) {
+            return {...user[0]}
         } else {
             return null
         }

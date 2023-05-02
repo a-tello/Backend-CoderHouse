@@ -1,39 +1,29 @@
 import { Router } from "express"
 import UserManager from "../dao/userManager.js"
 import { compareData, hashData } from "../utils.js"
+import passport from "passport"
 
 const router = Router()
 const userManager = new UserManager()
 
-router.post('/signup',  async (req, res) => {
-    
-    const hashPassword = await hashData(req.body.password)
-    const userData = {...req.body, password: hashPassword}
-    const newUser = await userManager.createUser(userData)
-    if(newUser) {
-        res.redirect('/views/login')
-    } else{
-        req.session.err = `El mail ${req.body.email} ya se encuentra registrado`
-        res.redirect('/views/error')
-    }
-})
+router.post('/signup',  passport.authenticate('signup', {
+    failureRedirect: '/views/error',
+    failureMessage: `El mail ya se encuentra registrado`,
+    successRedirect: '/views/login',
+    session:false
+}))
 
-router.post('/login',  async (req, res) => {
+router.post('/login',  passport.authenticate('login', {
+    failureRedirect: '/views/error',
+    failureMessage: 'Usuario o contraseña incorrectos',
+    successRedirect: '/views/products'  
+}))
 
-    const user = await userManager.loginUser(req.body)
-    if(user && await compareData(req.body.password, user.password)) {
-        req.session.email = user.email
-        req.session.password = user.password
-        req.session.firstName = user.firstName
-        req.session.lastName = user.lastName
-        req.session.age = user.age
-        req.session.role = user.role
-        res.redirect('/views/products')
-    } else{
-        req.session.err = "Usuario o contraseña incorrectos"
-        res.redirect('/views/error')
-    }
-})
+
+router.get('/signup/github',passport.authenticate('github', { scope: [ 'user:email' ] }));
+router.get('/github',  passport.authenticate('github', {
+    successRedirect: '/views/products'
+}))
 
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {

@@ -1,4 +1,5 @@
 .login-container {
+    max-width: 700px;
 	min-width: 400px;
 	margin: 0 auto;
 	padding: 20px;
@@ -50,8 +51,34 @@
 	text-decoration: none;
 	color: rgb(143, 143, 143);
 	text-align: center;
+    display: block;
 }
 
 .login-signup-link:hover {
 	text-decoration:underline;	
+}
+
+.span-login {
+    display: flex;
+    text-align: center;
+    color:rgb(143, 143, 143) ;
+    margin: 20px;
+}
+.span-login::after, .span-login::before {
+    content: "";
+    flex: 1 1 10%;
+    border-bottom: 1px solid rgb(193, 199, 198);
+    margin: 0px 10px;
+    transform: translateY(-50%);
+}
+
+
+.login-github {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: rgb(143, 143, 143);
+    align-items: center;
+    border: 1px solid rgb(143, 143, 143);
+    border-radius: 5px;
 }

@@ -12,6 +12,8 @@ import MessageManager from './dao/messagesManagerMongo.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
+import './passport/passportStrategies.js'
+import passport from 'passport'
 
 
 const PORT = 8080
@@ -39,6 +41,9 @@ app.use(express.static(__dirname + '/public'))
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 app.get('/', (req, res) => {
