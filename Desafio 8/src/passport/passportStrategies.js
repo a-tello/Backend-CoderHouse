@@ -2,10 +2,13 @@ import passport from 'passport'
 import { Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GitHubStrategy} from 'passport-github2'
 import UserManager from '../dao/userManager.js';
+import CartManager from '../dao/cartManagerMongo.js';
 import { userModel } from '../db/models/users.model.js';
 import { hashData } from '../utils.js';
+import { cartsModel } from '../db/models/carts.model.js';
 
 const userManager = new UserManager()
+const cartManager = new CartManager()
 
 passport.use('login', new LocalStrategy(
     {
@@ -25,8 +28,10 @@ passport.use('signup', new LocalStrategy(
         passReqToCallback: true 
     }, async (req, email, password, done) => {
 
+        const cart = await cartManager.addCart()
+
         const hashPassword = await hashData(req.body.password)
-        const userData = {...req.body, password: hashPassword}
+        const userData = {...req.body, password: hashPassword, cart: cart._id}
         const newUser = await userManager.createUser(userData)
         
         return newUser ? done(null, newUser) : done(null, false)

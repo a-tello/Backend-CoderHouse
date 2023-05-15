@@ -7,6 +7,7 @@ import cartsRouter from './routes/carts.router.js'
 import chatRouter from './routes/chat.router.js'
 import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
+import sessionsRouter from './routes/sessions.router.js'
 import { Server } from 'socket.io'
 import MessageManager from './dao/messagesManagerMongo.js'
 import cookieParser from 'cookie-parser'
@@ -54,6 +55,7 @@ app.use('api/carts', cartsRouter)
 app.use('api/chat', chatRouter)
 app.use('/views', viewsRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/sessions', sessionsRouter)
 
 
 
