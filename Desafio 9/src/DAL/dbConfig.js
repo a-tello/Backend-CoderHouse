@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import config from '../config.js'
 
-const URI = 'mongodb+srv://atello:D8YMIQ2LKtW6VSmp@cluster0.90kpthn.mongodb.net/ecommerce?retryWrites=true&w=majority'
+const URI = config.mongo_URI
 
 await mongoose.connect(URI)
     .then(() => console.log('Connected'))

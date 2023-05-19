@@ -1,4 +1,4 @@
-import { userModel } from "../db/models/users.model.js";
+import { userModel } from "./models/users.model.js";
 import { compareData } from "../utils.js";
 
 export default class UserManager {

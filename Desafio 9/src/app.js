@@ -2,6 +2,7 @@ import express from 'express'
 import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars'
 import './db/dbConfig.js'
+import './config.js'
 import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
 import chatRouter from './routes/chat.router.js'
@@ -9,7 +10,7 @@ import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
 import sessionsRouter from './routes/sessions.router.js'
 import { Server } from 'socket.io'
-import MessageManager from './dao/messagesManagerMongo.js'
+import MessageManager from './DAL/messagesManagerMongo.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
@@ -17,7 +18,7 @@ import './passport/passportStrategies.js'
 import passport from 'passport'
 
 
-const PORT = 8080
+const PORT = config.PORT
 const app = express()
 
 app.use(express.json())
@@ -31,7 +32,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         store: new mongoStore({
-            mongoUrl: 'mongodb+srv://atello:D8YMIQ2LKtW6VSmp@cluster0.90kpthn.mongodb.net/ecommerce?retryWrites=true&w=majority'
+            mongoUrl: config.URI
         })
     })
 )

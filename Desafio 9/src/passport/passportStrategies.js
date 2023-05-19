@@ -1,11 +1,10 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GitHubStrategy} from 'passport-github2'
-import UserManager from '../dao/userManager.js';
-import CartManager from '../dao/cartManagerMongo.js';
-import { userModel } from '../db/models/users.model.js';
+import UserManager from '../DAL/userManager.js';
+import CartManager from '../DAL/cartManagerMongo.js';
+import { userModel } from '../DAL/models/users.model.js';
 import { hashData } from '../utils.js';
-import { cartsModel } from '../db/models/carts.model.js';
 
 const userManager = new UserManager()
 const cartManager = new CartManager()
@@ -40,8 +39,8 @@ passport.use('signup', new LocalStrategy(
 )) 
 
 passport.use('github', new GitHubStrategy({
-        clientID: 'Iv1.3ab38e6536d1390c',
-        clientSecret: 'c9cfed99d6a5d49ad6e4f52e0579bfb24d72f0b2',
+        clientID: config.clientID,
+        clientSecret: config.clientSecret,
         callbackURL: "http://localhost:8080/api/users/github"
     },
       async (accessToken, refreshToken, profile, done) => {

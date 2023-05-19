@@ -1,5 +1,5 @@
 import { Router } from "express"
-import UserManager from "../dao/userManager.js"
+import UserManager from "../DAL/userManager.js"
 import { compareData, hashData } from "../utils.js"
 import passport from "passport"
 
