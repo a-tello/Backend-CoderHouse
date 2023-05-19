@@ -1,7 +1,7 @@
 import express from 'express'
 import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars'
-import './db/dbConfig.js'
+import './DAL/dbConfig.js'
 import './config.js'
 import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
