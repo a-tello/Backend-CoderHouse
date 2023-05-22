@@ -1,17 +1,10 @@
 import { Router } from "express"
-import UserManager from "../DAL/userManager.js"
-import { compareData, hashData } from "../utils.js"
+import { createUser } from '../controllers/users.controller.js'
 import passport from "passport"
 
 const router = Router()
-const userManager = new UserManager()
 
-router.post('/signup',  passport.authenticate('signup', {
-    failureRedirect: '/views/error',
-    failureMessage: `El mail ya se encuentra registrado`,
-    successRedirect: '/views/login',
-    session:false
-}))
+router.post('/signup', createUser)
 
 router.post('/login',  passport.authenticate('login', {
     failureRedirect: '/views/error',

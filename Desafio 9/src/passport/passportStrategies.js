@@ -5,6 +5,7 @@ import UserManager from '../DAL/userManager.js';
 import CartManager from '../DAL/cartManagerMongo.js';
 import { userModel } from '../DAL/models/users.model.js';
 import { hashData } from '../utils.js';
+import { createUser } from '../services/users.services.js'
 
 const userManager = new UserManager()
 const cartManager = new CartManager()
@@ -25,13 +26,10 @@ passport.use('signup', new LocalStrategy(
     {
         usernameField: 'email',
         passReqToCallback: true 
-    }, async (req, email, password, done) => {
+    }, async (email, password, done) => {
 
         const cart = await cartManager.addCart()
-
-        const hashPassword = await hashData(req.body.password)
-        const userData = {...req.body, password: hashPassword, cart: cart._id}
-        const newUser = await userManager.createUser(userData)
+        const newUser = await createUser(userData)
         
         return newUser ? done(null, newUser) : done(null, false)
         
