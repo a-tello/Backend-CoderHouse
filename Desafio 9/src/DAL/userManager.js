@@ -2,9 +2,9 @@ import { userModel } from "./models/users.model.js";
 
 export default class UserManager {
    
-    async getUser(email) {
+    async getUser(query) {
         try {
-            const user = userModel.find({email})
+            const user = userModel.find({query}).lean()
             return user
         } catch (error) {
             throw error            
@@ -13,7 +13,7 @@ export default class UserManager {
 
     async createOne(user) {
         try {
-            const newUser = userModel.create({user})
+            const newUser = userModel.create(user)
             return newUser
         } catch (error) {
             throw error

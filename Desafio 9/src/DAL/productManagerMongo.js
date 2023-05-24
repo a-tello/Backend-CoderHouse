@@ -38,8 +38,7 @@ export default class ProductManager {
 
     async updateProduct(productId, productValues) {
         try {
-            const updatedProduct = await productsModel.findByIdAndUpdate(productId, productValues)
-            return await productsModel.findById(productId)
+            await productsModel.findByIdAndUpdate(productId, productValues)
         } catch(err) {
             err.code = 400
             throw err
@@ -55,12 +54,5 @@ export default class ProductManager {
             err.code = 400
             throw err
         }
-    }
-
-    async deleteProducts(productId) {
-        const products = await this.getProducts()
-        const newProductList = products.filter((product) => product.id !== productId)
-
-        await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
     }
 }

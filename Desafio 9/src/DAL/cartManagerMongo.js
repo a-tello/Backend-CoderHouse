@@ -1,13 +1,11 @@
 import ProductManager from './productManagerMongo.js'
 import { cartsModel } from './models/carts.model.js'
 
-
-
 class CartManager {
 
-    async addCart () {
+    async addCart (products) {
         try {
-            const newCart = await cartsModel.create({"products": []})
+            const newCart = await cartsModel.create({products})
             return newCart
         } catch(err) {
             err.code = 400
@@ -16,10 +14,22 @@ class CartManager {
 
     }
 
+    async getCart(args) {
+        
+        try {
+            const carts = await cartsModel.find(args)
+            return carts
+        } catch {
+            const error = new Error('Carts not found')
+            error.code = 404 
+            throw error
+        }
+    }
+
     async getCarts() {
         
         try {
-            const carts = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+            const carts = await cartsModel.find()
             return carts
         } catch {
             const error = new Error('Carts not found')
@@ -32,11 +42,7 @@ class CartManager {
         
         try {
             const cart = await cartsModel.findById(cartId).populate('products.product').lean()
-            
-            if(cart) {
-                return cart
-            }
-            throw new Error
+            return cart
         } catch(err) {
             err.message = `Cart with id ${cartId} not found`
             err.code = 404
@@ -45,36 +51,19 @@ class CartManager {
     }
 
 
-    async addProductToCart(cartId, productId) {
-
-        const productManager = new ProductManager()
-        
+    async addProductToCart(query, action) {        
 
         try{
-            await productManager.getProductById(productId)
-            const cart = await this.getCartById(cartId)
-            const existsProductInCart = await cartsModel.findOne({_id: cartId, "products.product": productId})
-
-            if(existsProductInCart) {
-                await cartsModel.updateOne({_id:cartId, "products.product":productId},
-                {$inc:{"products.$.quantity":1}})
-            } else {
-                await cartsModel.findOneAndUpdate({_id:cartId},
-                {$push:{
-                    "products":{product: productId, quantity:1}}})
-            }
+            const cart = cartsModel.findOneAndUpdate(query, action, {new: true})
             return cart
         } catch(err) {
             throw err
-        }
-
-        
+        }   
     }
 
     async addProductsToCart(cartId, products) {
         try{
-            await cartsModel.updateOne({_id:cartId}, {$push:{"products":{$each :products}}})
-            const cart = await this.getCartById(cartId)
+            const cart = await cartsModel.findOneAndUpdate(cartId, products, {new: true})
             return cart
         } catch(err) {
             throw err
@@ -82,13 +71,11 @@ class CartManager {
 
     }
 
-    async updateProductQuantityFromCart(cartId, productId, newQuantity) {
+    async updateProductQuantityFromCart(cartId, product, newQuantity) {
 
-        const productManager = new ProductManager()
         try{
-            await productManager.getProductById(productId)
-            await this.getCartById(cartId) 
-            await cartsModel.updateOne({_id:cartId, "products.product":productId}, {$set:{"products.$.quantity":newQuantity}})
+            const cart = await cartsModel.updateOne(cartId, product, newQuantity, {new: true})
+            return cart
         } catch(err) {
             throw err
         }  
@@ -97,18 +84,17 @@ class CartManager {
     async deleteProductFromCart(cartId, productId) {
 
         try {
-            await this.getCartById(cartId) 
-            await cartsModel.updateOne({_id:cartId}, {"$pull":{"products":{"product":productId}}})
+            const cart = await cartsModel.updateOne(cartId, productId, {new: true})
+            return cart
         } catch (err) {
             throw err
         }
     }
 
-    async clearCart(cartId) {
+    async clearCart(cartId, field) {
         
         try {
-            await this.getCartById(cartId) 
-            await cartsModel.updateOne({_id:cartId}, {"$pull":{"products":{}}})
+            await cartsModel.updateOne(cartId, field)
         } catch (err) {
             throw err
         }

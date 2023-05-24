@@ -4,7 +4,7 @@ const productManager = new ProductManager()
 
 export const addProduct = async (product) => {
     try {
-        const newProduct = await productManager.create(product)
+        const newProduct = await productManager.addProduct(product)
         return newProduct
     }
     catch(err) {
@@ -44,9 +44,9 @@ export const getProducts = async (limit, page, query, sort) => {
     }
 }
 
-/* async getProductById(productId) {
+export const getProductById = async (productId) => {
     try {
-        const product = await productsModel.findById(productId)
+        const product = await productManager.getProductById(productId)
         return product
     } catch(err) {
         err.message = `Product with id ${productId} not found`
@@ -54,33 +54,25 @@ export const getProducts = async (limit, page, query, sort) => {
         throw err
     }
     
-} */
-/* 
-async updateProduct(productId, productValues) {
+}
+
+export const updateProduct = async (productId, productValues) => {
     try {
-        const updatedProduct = await productsModel.findByIdAndUpdate(productId, productValues)
-        return await productsModel.findById(productId)
+        const updatedProduct = await productManager.updateProduct(productId, productValues)
+        return await productManager.getProductById(productId)
     } catch(err) {
         err.code = 400
         throw err
     }
 }
 
-async deleteProductById(productId) {
+export const deleteProductById = async (productId) => {
     
     try {
-        const deleteProduct = await productsModel.findByIdAndDelete(productId)
+        const deleteProduct = await productManager.deleteProductById(productId)
         return deleteProduct
     } catch(err) {
         err.code = 400
         throw err
     }
 }
-
-async deleteProducts(productId) {
-    const products = await this.getProducts()
-    const newProductList = products.filter((product) => product.id !== productId)
-
-    await fs.promises.writeFile(this.path, JSON.stringify(newProductList, null, 4))
-}
-} */

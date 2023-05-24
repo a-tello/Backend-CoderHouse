@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import ProductManager from '../DAL/productManagerMongo.js'
 import CartManager from '../DAL/cartManagerMongo.js'
+import { getProducts } from '../services/products.services.js'
 
 const router = Router()
 const productManager = new ProductManager
@@ -10,7 +11,7 @@ router.get('/products', async (req, res) => {
     const {limit=10, page=1, sort=null, code=null, ...query} = req.query
     
     try {
-        const products = await productManager.getProducts(limit, page, query, sort)
+        const products = await getProducts(limit, page, query, sort)
         res.render('products',{style:'products.css', products:products.payload, user:req.user})
         
     } catch(error) {

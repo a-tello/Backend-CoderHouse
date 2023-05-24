@@ -2,7 +2,7 @@ import express from 'express'
 import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars'
 import './DAL/dbConfig.js'
-import './config.js'
+import config from './config.js'
 import productsRouter from './routes/products.router.js'
 import cartsRouter from './routes/carts.router.js'
 import chatRouter from './routes/chat.router.js'
@@ -17,8 +17,7 @@ import mongoStore from 'connect-mongo'
 import './passport/passportStrategies.js'
 import passport from 'passport'
 
-
-const PORT = config.PORT
+const PORT = config.port
 const app = express()
 
 app.use(express.json())
@@ -32,7 +31,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         store: new mongoStore({
-            mongoUrl: config.URI
+            mongoUrl: config.mongo_URI
         })
     })
 )
@@ -51,9 +50,9 @@ app.use(passport.session())
 app.get('/', (req, res) => {
     res.redirect('/views/login')
 })
-app.use('api/products', productsRouter)
-app.use('api/carts', cartsRouter)
-app.use('api/chat', chatRouter)
+app.use('/api/products', productsRouter)
+app.use('/api/carts', cartsRouter)
+app.use('/api/chat', chatRouter)
 app.use('/views', viewsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionsRouter)
