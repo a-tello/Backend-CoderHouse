@@ -1,8 +1,7 @@
 import passport from 'passport'
 import { Strategy as LocalStrategy} from 'passport-local'
 import { Strategy as GitHubStrategy} from 'passport-github2'
-import { userModel } from '../DAL/models/users.model.js';
-import { createUser, getUser, loginUser } from '../services/users.services.js'
+import { createUser, getUserById, loginUser } from '../services/users.services.js'
 import config from '../config.js'
 
 
@@ -52,12 +51,11 @@ passport.use('github', new GitHubStrategy({
 
 
   passport.serializeUser((user, done) => {
-    console.log(user);
     done(null, user._id)
   })
 
   passport.deserializeUser( async(userId, done) => {
-    const user = await getUser(userId)
+    const user = await getUserById(userId)
     done(null, user)
 
   })
