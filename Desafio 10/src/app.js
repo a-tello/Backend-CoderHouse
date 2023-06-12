@@ -19,6 +19,8 @@ import mongoStore from 'connect-mongo'
 import passport from 'passport'
 import cors from 'cors'
 import './passport/passportStrategies.js'
+import { generateProduct } from './utils/mocks.js'
+import { jwtValidator } from './middleware/jwt.middleware.js'
 
 
 const PORT = config.port
@@ -64,6 +66,14 @@ app.use('/api/chat', chatRouter)
 app.use('/views', viewsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionsRouter)
+app.get('/mockingproducts', (req, res) => {
+    try {
+        const mockProducts = generateProduct(100)
+        res.json({message:'Products created', products: mockProducts})
+    } catch (error) {
+        console.log(error);
+    }
+})
 
 
 

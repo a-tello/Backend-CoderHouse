@@ -3,7 +3,7 @@ import CartManager from "../DAL/DAO/cartManagerMongo.js"
 import UsersRes from "../DAL/DTOs/usersRes.js"
 import { hashData, compareData} from "../utils.js"
 import config from '../config.js'
-import { generateToken } from "../jwt.utils.js"
+import { generateToken } from "../utils/jwt.utils.js"
 
 const userAdmin = {
     _id:0, 
