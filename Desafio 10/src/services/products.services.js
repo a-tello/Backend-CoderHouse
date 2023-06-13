@@ -8,7 +8,6 @@ export const addProduct = async (product) => {
         return newProduct
     }
     catch(err) {
-        err.code = 400
         throw err
     }
 }
@@ -39,7 +38,6 @@ export const getProducts = async (limit, page, query, sort) => {
         return info
     }
     catch(err) {
-        err.code = 400
         throw err
     }
 }
@@ -49,8 +47,7 @@ export const getProductById = async (productId) => {
         const product = await productManager.getProductById(productId)
         return product
     } catch(err) {
-        err.message = `Product with id ${productId} not found`
-        err.code = 404
+        err.cause = `Product with id ${productId} not found`
         throw err
     }
     
@@ -58,10 +55,9 @@ export const getProductById = async (productId) => {
 
 export const updateProduct = async (productId, productValues) => {
     try {
-        const updatedProduct = await productManager.updateProduct(productId, productValues)
+        await productManager.updateProduct(productId, productValues)
         return await productManager.getProductById(productId)
     } catch(err) {
-        err.code = 400
         throw err
     }
 }
@@ -72,7 +68,6 @@ export const deleteProductById = async (productId) => {
         const deleteProduct = await productManager.deleteProductById(productId)
         return deleteProduct
     } catch(err) {
-        err.code = 400
         throw err
     }
 }

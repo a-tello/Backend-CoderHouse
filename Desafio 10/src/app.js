@@ -20,8 +20,7 @@ import passport from 'passport'
 import cors from 'cors'
 import './passport/passportStrategies.js'
 import { generateProduct } from './utils/mocks.js'
-import { jwtValidator } from './middleware/jwt.middleware.js'
-
+import { errorMiddleware } from './errors/error.middleware.js'
 
 const PORT = config.port
 const app = express()
@@ -57,6 +56,7 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
+
 app.get('/', (req, res) => {
     res.redirect('/views/login')
 })
@@ -71,11 +71,11 @@ app.get('/mockingproducts', (req, res) => {
         const mockProducts = generateProduct(100)
         res.json({message:'Products created', products: mockProducts})
     } catch (error) {
-        console.log(error);
+        throw error
     }
 })
 
-
+app.use(errorMiddleware)
 
 const httpServer = app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);

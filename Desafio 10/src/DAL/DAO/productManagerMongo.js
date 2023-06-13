@@ -7,7 +7,6 @@ export default class ProductManager {
             return newProduct
         }
         catch(err) {
-            err.code = 400
             throw err
         }
     }
@@ -19,7 +18,6 @@ export default class ProductManager {
             return products
         }
         catch(err) {
-            err.code = 400
             throw err
         }
     }
@@ -29,8 +27,7 @@ export default class ProductManager {
             const product = await productsModel.findById(productId)
             return product
         } catch(err) {
-            err.message = `Product with id ${productId} not found`
-            err.code = 404
+
             throw err
         }
         
@@ -40,7 +37,6 @@ export default class ProductManager {
         try {
             await productsModel.findByIdAndUpdate(productId, productValues)
         } catch(err) {
-            err.code = 400
             throw err
         }
     }
@@ -51,7 +47,6 @@ export default class ProductManager {
             const deleteProduct = await productsModel.findByIdAndDelete(productId)
             return deleteProduct
         } catch(err) {
-            err.code = 400
             throw err
         }
     }
