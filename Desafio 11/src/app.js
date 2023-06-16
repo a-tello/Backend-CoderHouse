@@ -21,6 +21,7 @@ import cors from 'cors'
 import './passport/passportStrategies.js'
 import { generateProduct } from './utils/mocks.js'
 import { errorMiddleware } from './errors/error.middleware.js'
+import { logger } from './winston.js'
 
 const PORT = config.port
 const app = express()
@@ -73,6 +74,15 @@ app.get('/mockingproducts', (req, res) => {
     } catch (error) {
         throw error
     }
+})
+app.get('/loggerTest', (req,res) => {
+    logger.fatal(`Method: ${req.method} - URL: ${req.url}`)
+    logger.error(`Method: ${req.method} - URL: ${req.url}`)
+    logger.warning(`Method: ${req.method} - URL: ${req.url}`)
+    logger.info(`Method: ${req.method} - URL: ${req.url}`)
+    logger.http(`Method: ${req.method} - URL: ${req.url}`)
+    logger.debug(`Method: ${req.method} - URL: ${req.url}`)
+    res.render('test', {message:'Testeando logger'})
 })
 
 app.use(errorMiddleware)
