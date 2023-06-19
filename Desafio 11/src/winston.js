@@ -25,7 +25,6 @@ const customLevels = {
 export let logger
 
 if(env === 'development') {
-    console.log('development');
     logger = winston.createLogger({
         levels: customLevels.names,
         level: 'debug',
@@ -38,6 +37,8 @@ if(env === 'development') {
             })
         ]
     })
+    logger.info(`Environment: ${env}`)
+
 } else {
     logger = winston.createLogger({
         levels: customLevels.names,
@@ -59,5 +60,7 @@ if(env === 'development') {
             })
         ]
     })
+    logger.info(`Environment: ${env}`)
+
 }
 

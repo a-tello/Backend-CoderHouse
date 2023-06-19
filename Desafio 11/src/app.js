@@ -88,7 +88,7 @@ app.get('/loggerTest', (req,res) => {
 app.use(errorMiddleware)
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+    logger.info(`Server listening on port ${PORT}`)
 })
 
 const socketServer = new Server(httpServer)
