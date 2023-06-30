@@ -11,3 +11,7 @@ export const hashData = async (data) => {
 export const compareData = async (data, dataDB) => {
     return bcrypt.compare(data, dataDB)
 }
+
+export const cambiarCookies = (req, res, name, value) => {
+    res.cookie(name, value, { overwrite: true })
+  }

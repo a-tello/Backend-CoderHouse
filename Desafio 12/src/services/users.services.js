@@ -34,7 +34,7 @@ export const getUserById = async (id) => {
 export const getUser = async (query) => {
     try {
         const user = await userManager.getUser(query)
-        const userRes = new UsersRes(user)
+        const userRes = new UsersRes(...user)
         return userRes
     } catch (error) {
         
@@ -75,9 +75,16 @@ export const login = async (userData) => {
         const token = generateToken({...userRes, isAdmin: false})
         return token
     }
-    
-
 }
+
+export const updateUser = async (uid, data) => {
+    try {
+        return await userManager.updateOne(uid, data)
+    } catch (err) {
+        throw err        
+    }
+}
+
 const isAdmin = async (email, password) => {
     return email === config.admin_email && password === config.admin_password
 }

@@ -11,7 +11,7 @@ export const jwtValidator = (req, res, next) => {
             return next()
         } 
     } catch (error) {
-        res.status(401).json(error);
+        throw error
     }
 }
 
@@ -27,7 +27,7 @@ export const verifyTokenAdmin = (req, res, next) => {
             throw new Error
         }
     } catch (error) {
-        res.status(401).json({error: 'Unauthorized. Only admin'});
+        res.status(401).json({error: 'Unauthorized.'});
     }
 } 
 
@@ -43,6 +43,38 @@ export const verifyTokenUser = (req, res, next) => {
             throw new Error
         }
     } catch (error) {
-        res.status(401).json({error: 'Unauthorized. Only users'});
+        res.status(401).json({error: 'Unauthorized.'});
+    }
+} 
+
+export const verifyTokenPremium = (req, res, next) => {
+    try {
+        const authHeader = req.get('Authorization')
+        const token = authHeader.split(' ')[1]
+        const validateUser = jwt.verify(token, config.secretKeyTkn)
+
+        if(validateUser.role === 'Premium'){
+            next()
+        } else {
+            throw new Error
+        }
+    } catch (error) {
+        res.status(401).json({error: 'Unauthorized.'});
+    }
+} 
+
+export const verifyTokenPremiumOrAdmin = (req, res, next) => {
+    try {
+        const authHeader = req.get('Authorization')
+        const token = authHeader.split(' ')[1]
+        const validateUser = jwt.verify(token, config.secretKeyTkn)
+
+        if(validateUser.role === 'Premium' || validateUser.isAdmin){
+            next()
+        } else {
+            throw new Error
+        }
+    } catch (error) {
+        res.status(401).json({error: 'Unauthorized.'});
     }
 } 

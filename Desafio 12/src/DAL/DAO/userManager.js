@@ -28,4 +28,12 @@ export default class UserManager {
             throw error
         }
     }
+
+    async updateOne(userID, updatedData){
+        try {
+            return await userModel.findOneAndUpdate({_id: userID}, updatedData, {new:true}).lean()
+        } catch (err) {
+            throw err
+        }
+    }
 }

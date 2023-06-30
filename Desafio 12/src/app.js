@@ -10,6 +10,7 @@ import chatRouter from './routes/chat.router.js'
 import viewsRouter from './routes/views.router.js'
 import usersRouter from './routes/users.router.js'
 import sessionsRouter from './routes/sessions.router.js'
+import testRouter from './routes/test.router.js'
 
 import { Server } from 'socket.io'
 import MessageManager from './DAL/DAO/messagesManagerMongo.js'
@@ -29,7 +30,8 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cookieParser())
-app.use(cors({origin:'localhost:8080',allowedHeaders:true}))
+//app.use(cors({origin:'localhost:8080',allowedHeaders:true}))
+app.use(cors())
 
 app.use(express.static(__dirname + '/public'))
 
@@ -57,7 +59,6 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-
 app.get('/', (req, res) => {
     res.redirect('/views/login')
 })
@@ -67,23 +68,7 @@ app.use('/api/chat', chatRouter)
 app.use('/views', viewsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionsRouter)
-app.get('/mockingproducts', (req, res) => {
-    try {
-        const mockProducts = generateProduct(100)
-        res.json({message:'Products created', products: mockProducts})
-    } catch (error) {
-        throw error
-    }
-})
-app.get('/loggerTest', (req,res) => {
-    logger.fatal(`Method: ${req.method} - URL: ${req.url}`)
-    logger.error(`Method: ${req.method} - URL: ${req.url}`)
-    logger.warning(`Method: ${req.method} - URL: ${req.url}`)
-    logger.info(`Method: ${req.method} - URL: ${req.url}`)
-    logger.http(`Method: ${req.method} - URL: ${req.url}`)
-    logger.debug(`Method: ${req.method} - URL: ${req.url}`)
-    res.render('test', {message:'Testeando logger'})
-})
+app.use('/test', testRouter)
 
 app.use(errorMiddleware)
 

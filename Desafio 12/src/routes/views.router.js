@@ -3,6 +3,9 @@ import CartManager from '../DAL/DAO/cartManagerMongo.js'
 import { getProducts } from '../services/products.services.js'
 import { purchase } from '../controllers/carts.controller.js'
 import { jwtValidator } from '../middleware/jwt.middleware.js'
+import jwt from "jsonwebtoken"
+import config from "../config.js"
+
 
 const router = Router()
 const cartManager = new CartManager
@@ -53,6 +56,7 @@ router.get('/signup', (req, res) => {
 })
 
 router.get('/profile', jwtValidator, (req, res) => {
+    console.log(req.user);
     if(!req.user?.email) {
         res.redirect('/views/login')
         return
@@ -63,6 +67,20 @@ router.get('/profile', jwtValidator, (req, res) => {
 router.get('/ticket', async (req, res) => {
     await purchase(req, res)
     res.send("Compra Exitosa")
+})
+
+router.get('/reset', (req, res) => {
+    res.render('reset')
+})
+
+router.get('/resetPassword', (req, res, next) => {
+    const { token } = req.query
+    if(jwt.verify(token, config.secretKeyTkn)) {
+        res.cookie('Authorization', token.toString())
+        return res.render('newPassword')
+    }
+    res.cookie('error', 'El enlace ha expirado. Genere un nuevo enlace')
+    return res.redirect('/views/error')
 })
 
 router.get('/error',  (req, res) => {
