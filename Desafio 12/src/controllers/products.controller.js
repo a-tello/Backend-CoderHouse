@@ -39,6 +39,10 @@ export const getOneProductById = async (req, res, next) => {
 
 export const addOneProduct = async (req, res, next) => {
     const product = req.body
+    if(!product.owner) {
+        product.owner = 'admin'
+    }
+
     try {
         await addProduct(product)
         res.status(201).json({'message': 'Product created', 'product': product})
@@ -76,11 +80,15 @@ export const deleteOneProduct = async (req, res, next) => {
     const {pid} = req.params
         
     try {
-        const deleted = await deleteProductById(pid)
-        if(!deleted) {
-            throw new Error
+        const product = await getProductById(pid)
+        if(req.user.isAdmin || req.user.email === product.owner){
+            const deleted = await deleteProductById(pid)
+            if(!deleted) {
+                throw new Error
+            }
+            return res.status(200).json(`Product ${pid} deleted successfully`)
         }
-        res.status(200).json(`Product ${pid} deleted successfully`)
+        throw new Error('Unauthorized')
     } catch(err) {
         const customError = CustomError.createCustomError({
             name: ErrorsProductsName.DELETE_PRODUCT_ERROR_NAME_PRODUCT_ERROR_NAME,

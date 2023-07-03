@@ -1,5 +1,7 @@
+import CustomError from "../errors/CustomErrors.js"
 import { ErrorsCartMessage, ErrorsCartName } from "../errors/error.enum.js"
 import { addCart, addProductToCart, checkProducts, getCartById, addProductsToCart, updateProductQuantityFromCart, deleteProductFromCart, clearCart } from "../services/carts.services.js"
+import { getProductById } from "../services/products.services.js"
 import { createTicket } from "../services/ticket.services.js"
 
 
@@ -41,13 +43,18 @@ export const addOneProductToCart = async (req, res, next) => {
     const {cid, pid} = req.params
     
     try {
+        const product = await getProductById(pid)
+        if(product.owner === req.user.email && req.user.role === 'Premium'){
+            throw new Error('Unauthorized')
+        }
+
         const cart = await addProductToCart(cid, pid) 
         res.status(201).json({'message': 'Product added successfully', cart})
     } catch(err) {
         const customError = CustomError.createCustomError({
             name: ErrorsCartName.ADD_PRODUCT_ERROR_NAME,
             message: ErrorsCartMessage.ADD_PRODUCT_ERROR_MESSAGE,
-            cause: err.cause,
+            cause: err.message || err.cause,
             code: 400
         })
         next(customError)

@@ -3,7 +3,9 @@ import config from '../config.js'
 
 const secretKeyJWT = config.secretKeyTkn
 
-export const generateToken = (user) => {
-    const tkn = jwt.sign(user, secretKeyJWT)
-    return tkn
+export const generateToken = (user, exp=null) => {
+    if(exp) {
+        return jwt.sign(user, secretKeyJWT, {expiresIn:exp})
+    }
+    return jwt.sign(user, secretKeyJWT)
 }

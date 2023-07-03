@@ -8,6 +8,6 @@ router.get('/', getAllProducts)
 router.get('/:pid', getOneProductById)
 router.post('/', verifyTokenPremiumOrAdmin, addOneProduct)
 router.put('/:pid', verifyTokenAdmin, updatedOneProduct)
-router.delete('/:pid', verifyTokenAdmin, deleteOneProduct)
+router.delete('/:pid', verifyTokenPremiumOrAdmin, deleteOneProduct)
 
 export default router

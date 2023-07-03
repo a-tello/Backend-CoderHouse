@@ -75,12 +75,15 @@ router.get('/reset', (req, res) => {
 
 router.get('/resetPassword', (req, res, next) => {
     const { token } = req.query
-    if(jwt.verify(token, config.secretKeyTkn)) {
-        res.cookie('Authorization', token.toString())
-        return res.render('newPassword')
+    try {
+        if(jwt.verify(token, config.secretKeyTkn)) {
+            res.cookie('Authorization', token.toString())
+            return res.render('newPassword')
+        }
+    } catch (error) {
+        res.cookie('error', 'El enlace ha expirado. Genere un nuevo enlace')
+        return res.redirect('/views/error')
     }
-    res.cookie('error', 'El enlace ha expirado. Genere un nuevo enlace')
-    return res.redirect('/views/error')
 })
 
 router.get('/error',  (req, res) => {

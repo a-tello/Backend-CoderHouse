@@ -70,6 +70,24 @@ export const verifyTokenPremiumOrAdmin = (req, res, next) => {
         const validateUser = jwt.verify(token, config.secretKeyTkn)
 
         if(validateUser.role === 'Premium' || validateUser.isAdmin){
+            req.user = {...validateUser}
+            next()
+        } else {
+            throw new Error
+        }
+    } catch (error) {
+        res.status(401).json({error: 'Unauthorized.'});
+    }
+} 
+
+export const verifyTokenPremiumOrUser = (req, res, next) => {
+    try {
+        const authHeader = req.get('Authorization')
+        const token = authHeader.split(' ')[1]
+        const validateUser = jwt.verify(token, config.secretKeyTkn)
+
+        if(validateUser.role === 'Premium' || validateUser.role === 'Usuario'){
+            req.user = {...validateUser}
             next()
         } else {
             throw new Error
