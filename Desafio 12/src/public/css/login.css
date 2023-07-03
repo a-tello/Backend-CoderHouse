@@ -101,3 +101,22 @@
     border: 1px solid rgb(143, 143, 143);
     border-radius: 5px;
 }
+
+.login-btn {
+	display: block;
+	width: 100%;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid #4c4faf;
+	border-radius: 5px;
+	color: #4c4faf;
+	font-size: 16px;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+
+.login-btn:hover {
+	background-color: #7677a1;
+	color: white;
+
+}

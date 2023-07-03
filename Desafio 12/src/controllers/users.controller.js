@@ -2,7 +2,7 @@ import UserManager from "../DAL/DAO/userManager.js";
 import UsersRes from "../DAL/DTOs/usersRes.js";
 import { transporter } from "../nodemailer.js";
 import { createUser, getUser, login, updateUser } from "../services/users.services.js"
-import { compareData } from "../utils.js";
+import { compareData, hashData } from "../utils.js";
 import { generateToken } from "../utils/jwt.utils.js";
 
 export const loginUser = async (req, res, next) => {
@@ -30,7 +30,7 @@ export const singUpUser = async (req, res, next) => {
 export const resetPassword = async(req, res, next) => {
     const user = await getUser({email: req.body.email})
     if(user){
-        const token = generateToken({user}, 600)
+        const token = generateToken({user}, '1h')
         const linkToken = token.toString()
         await transporter.sendMail({
             from:'AQ Tienda',
@@ -48,12 +48,16 @@ export const updatePassword = async(req, res) => {
     const { pass1 } = req.body
     const userManager = new UserManager()
     const email = req.user.user.email
-    console.log(req.user.user.email);
     const user = await userManager.getUser({email})
-    console.log({user})
     const match = await compareData(pass1, user[0].password)
-    console.log({match});
-    
+
+    if(match) return res.render('msj', {msj: 'La contraseña no puede coincidir con la anterior. Por favor, cambie su contraseña'})
+
+    const hashPassword = await hashData(pass1)
+    await updateUser(user[0]._id, {password: hashPassword})
+
+    res.cookie('error', 'La contraseña fue cambiada con éxito')
+    return res.redirect('/views/error')    
 }
 
 export const changeRole = async(req, res) => {
