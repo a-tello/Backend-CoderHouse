@@ -5,28 +5,39 @@ paths:
       parameters:
         - name: limit
           in: query
-          schema:
-            type: integer
-            minimum: 1  
+          type: integer
+          minimum: 1
+          description: Limit of products. Default 10
         - name: page
           in: query
-          schema:
-            type: integer
-            minimum: 1  
+          type: integer
+          minimum: 1  
+          description: Number of page. Default 1
         - name: sort
           in: query
           example: asc desc
-          schema:
-            type: string
-            minimum: 1  
-        - name: query
+          type: string
+          enum:
+            - asc
+            - desc
+          minimum: 1  
+          description: Product order (asc / desc). Default asc
+        - name: field
           in: query
-          schema:
-            type: string
-            minimum: 1  
+          type: string
+          enum:
+            - category
+            - price
+          minimum: 1  
+          description: Filter by field (category or price)
+
       responses:
         '200':
           description: All products found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
         '400':
           description: Some data is missing
         '500':
@@ -34,6 +45,8 @@ paths:
       tags:
         - Products
     post:
+      security: 
+        - bearerAuth: []
       sumary: Add one product
       requestBody:
         required: true
@@ -41,10 +54,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/product'
-            algo: algo
       responses:
         '201':
           description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
         '400':
           description: Error. Missing info
         '401':
@@ -53,6 +69,7 @@ paths:
           description: Server error
       tags:
         - Products
+  
   /api/products/{id}:
     get:
       sumary: Get one product by ID
@@ -63,6 +80,10 @@ paths:
       responses:
         '200':
           description: One product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
         '400':
           description: Product doesn't exist
         '500':
@@ -70,6 +91,8 @@ paths:
       tags:
         - Products
     put:
+      security: 
+        - bearerAuth: []
       sumary: Update one product
       parameters:
         - name: id
@@ -87,6 +110,8 @@ paths:
       tags:
         - Products
     delete:
+      security: 
+        - bearerAuth: []
       sumary: Update one product
       parameters:
         - name: id
@@ -103,13 +128,14 @@ paths:
           description: Server error
       tags:
         - Products
+
+
 components:
+  
   schemas:
     product:
       type: object
       properties:
-        id:
-          type: string
         title: 
           type: string
         description: 
@@ -128,4 +154,33 @@ components:
           type: boolean
         owner: 
           type: string
-      
+  
+    products:
+      type: object
+      properties:
+        status:
+          type: boolean
+        payload:
+          $ref: '#/components/schemas/product'
+        totalPages:
+          type: integer
+        prevPage:
+          type: integer
+        nextPage:
+          type: integer
+        page:
+          type: integer
+        hasPrevPage:
+          type: boolean
+        hasNextPage:
+          type: boolean  
+        prevLink:
+          type: string
+        nextLink:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
