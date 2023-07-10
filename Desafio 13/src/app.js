@@ -20,9 +20,9 @@ import mongoStore from 'connect-mongo'
 import passport from 'passport'
 import cors from 'cors'
 import './passport/passportStrategies.js'
-import { generateProduct } from './utils/mocks.js'
 import { errorMiddleware } from './errors/error.middleware.js'
-import { logger } from './winston.js'
+import swaggerUI from 'swagger-ui-express'
+import { swaggerSetup } from './swaggerSpecs.js'
 
 const PORT = config.port
 const app = express()
@@ -69,6 +69,7 @@ app.use('/views', viewsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/test', testRouter)
+app.use('/api/docs', swaggerUI.serve, swaggerUI.setup(swaggerSetup))
 
 app.use(errorMiddleware)
 

@@ -1,4 +1,6 @@
 import { Router } from 'express'
+import { logger } from '../winston.js'
+import { generateProduct } from '../utils/mocks.js'
 
 const router = Router()
 
