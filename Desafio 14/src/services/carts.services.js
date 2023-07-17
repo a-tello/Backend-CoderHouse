@@ -106,8 +106,8 @@ export const deleteProductFromCart = async (cartId, productId) => {
 export const clearCart = async (cartId) => {
     
     try {
-        await this.getCartById(cartId) 
-        await cartsModel.updateOne({_id:cartId}, {"$pull":{"products":{}}})
+        await cartManager.getCartById(cartId)
+        await cartManager.clearCart({_id:cartId}, {"$pull":{"products":{}}})
     } catch (err) {
         throw err
     }

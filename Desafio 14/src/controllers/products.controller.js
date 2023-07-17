@@ -22,9 +22,10 @@ export const getAllProducts = async (req, res, next) => {
 
 export const getOneProductById = async (req, res, next) => {
     const {pid} = req.params
+    console.log(pid);
         
     try {
-        const product = getProductById(pid) 
+        const product = await getProductById(pid)
         res.status(200).json({message: 'productos', product})
     } catch(err) {
         const customError = CustomError.createCustomError({
@@ -44,8 +45,9 @@ export const addOneProduct = async (req, res, next) => {
     }
 
     try {
-        await addProduct(product)
-        res.status(201).json({'message': 'Product created', 'product': product})
+        const addedProduct = await addProduct(product)
+        
+        res.status(201).json({'message': 'Product created', 'product': addedProduct})
     } catch(err) {
         const customError = CustomError.createCustomError({
             name: ErrorsProductsName.ADD_PRODUCT_ERROR_NAME,

@@ -124,7 +124,6 @@ export const deleteProduct = async (req, res, next) => {
 
 export const emptyCart = async (req, res, next) => {
     const {cid} = req.params
-    
     try {
         await clearCart(cid)
         res.status(201).json({'message': `Products deleted successfully. Cart ${cid} is empty`})
