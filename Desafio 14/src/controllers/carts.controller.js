@@ -91,8 +91,8 @@ export const updateProductsFromCart = async (req, res, next) => {
             throw error
         }
         
-        await updateProductQuantityFromCart(cid, pid, quantity)
-        res.status(201).json({'message': `Quantity of product ${pid} changed to ${quantity}`})
+        const cart = await updateProductQuantityFromCart(cid, pid, quantity)
+        res.status(201).json({'message': `Quantity of product ${pid} changed to ${quantity}`, cart})
     } catch(err) {
         const customError = CustomError.createCustomError({
             name: ErrorsCartName.UPDATE_PRODUCT_ERROR_NAME,

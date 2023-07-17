@@ -71,10 +71,10 @@ class CartManager {
 
     }
 
-    async updateProductQuantityFromCart(cartId, product, newQuantity) {
+    async updateProductQuantityFromCart(cartId, update) {
 
         try{
-            const cart = await cartsModel.updateOne(cartId, product, newQuantity, {new: true})
+            const cart = await cartsModel.findOneAndUpdate(cartId, update, {new: true})
             return cart
         } catch(err) {
             throw err
