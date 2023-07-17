@@ -123,6 +123,15 @@ describe('Tests de endpoints de Carts', () => {
         expect(response._body.cart.products[3]).to.have.property('quantity').to.be.equal(5)
     })
 
+    it('Test metodo PUT /api/carts/cartID/products/productID', async () => {
+        const response = await request.put(`/api/carts/${cartIdTest}/products/${productId1}`).send({quantity: 3})
+        expect(response._body.cart).to.have.property('_id').that.is.equal(cartIdTest)
+        expect(response._body.cart).to.have.property('products').to.be.length(4)
+        expect(response._body.cart.products[0]).to.have.property('product').to.be.equal(productId1)
+        expect(response._body.cart.products[0]).to.have.property('quantity').to.be.equal(3)
+        
+    })
+
     it('Test metodo DELETE /api/carts/id', async () => {
         const response = await request.delete(`/api/carts/${cartIdTest}`)
        // expect(response._body.product).to.be.null
