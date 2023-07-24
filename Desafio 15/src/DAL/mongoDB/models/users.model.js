@@ -30,6 +30,16 @@ const usersSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'carts',
          _id : false,
          unique: true
+    },
+    documents: [
+        {
+            name: {type: String},
+            reference: {type: String},
+             _id : false 
+        }
+    ],
+    last_connection: {
+        type: String
     }
 })
 
