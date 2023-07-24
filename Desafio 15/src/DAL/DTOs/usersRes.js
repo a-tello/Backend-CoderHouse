@@ -1,6 +1,6 @@
 export default class UsersRes {
     constructor(user) {
-        this.username = user.firstname[0] + user.lastname.toUpperCase() || ' '
+        this.username = user.firstName[0] + user.lastName.toUpperCase() || ' '
         this.firstName = user.firstname
         this.lastName = user.lastname
         this.age = user.age

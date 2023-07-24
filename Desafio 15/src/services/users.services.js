@@ -34,8 +34,9 @@ export const getUserById = async (id) => {
 export const getUser = async (query) => {
     try {
         const user = await userManager.getUser(query)
-        const userRes = new UsersRes(...user)
-        return userRes
+        //const userRes = new UsersRes(...user)
+        //return userRes
+        return user
     } catch (error) {
         
     }
@@ -52,7 +53,7 @@ export const createUser = async (user) => {
             const cart = await cartManager.addCart()
             const hashPassword = await hashData(password)
             const userData = {...user, password: hashPassword, cart: cart._id}
-            const newUser = await userManager.createOne({...userData, role: 'Usuario'})
+            const newUser = await userManager.createOne({...userData, role: 'Usuario', last_connection: Date.now()})
             return newUser
         }
     } catch (error) {
@@ -73,6 +74,7 @@ export const login = async (userData) => {
     if(user.length !== 0 && await compareData(password, user[0].password)) {
         const userRes = new UsersRes(...user)
         const token = generateToken({...userRes, isAdmin: false}, '1h')
+        await updateLastConnection(user[0].email)
         return token
     }
 }
@@ -87,4 +89,9 @@ export const updateUser = async (uid, data) => {
 
 const isAdmin = async (email, password) => {
     return email === config.admin_email && password === config.admin_password
+}
+
+const updateLastConnection = async (userEmail) => {
+    const user = await getUser({email: userEmail})
+    await updateUser({_id:user[0]._id}, {$set: {last_connection: Date.now()}})
 }

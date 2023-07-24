@@ -78,6 +78,7 @@ export const changeRole = async(req, res) => {
 }
 
 export const logoutUser = (req, res) => {
+
     res.clearCookie('Authorization')
     res.redirect('/views/login')
 }
