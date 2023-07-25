@@ -79,9 +79,12 @@ export const login = async (userData) => {
     }
 }
 
-export const updateUser = async (uid, data) => {
+export const addDocumentsToUser = async (uid, files) => {
     try {
-        return await userManager.updateOne(uid, data)
+        for(let file of files['docs']){
+            await userManager.updateOne(uid, {$push:{"documents":{name: file.originalname , reference:file.filename}}})
+        }
+        return
     } catch (err) {
         throw err        
     }

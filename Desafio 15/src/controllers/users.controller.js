@@ -1,7 +1,7 @@
 import UserManager from "../DAL/DAO/userManager.js";
 import UsersRes from "../DAL/DTOs/usersRes.js";
 import { transporter } from "../nodemailer.js";
-import { createUser, getUser, login, updateUser } from "../services/users.services.js"
+import { addDocumentsToUser, createUser, getUser, login } from "../services/users.services.js"
 import { compareData, hashData } from "../utils.js";
 import { generateToken } from "../utils/jwt.utils.js";
 
@@ -77,8 +77,19 @@ export const changeRole = async(req, res) => {
     }     
 }
 
-export const logoutUser = (req, res) => {
+export const saveFiles = async (req, res) => {
+    const files = req.files
+    const { uid } = req.params
+    try {
+        await addDocumentsToUser(uid, files)
+        res.status(200).send('Agregados')
+    } catch (err) {
+        throw err
+    }
+}
 
+
+export const logoutUser = (req, res) => {
     res.clearCookie('Authorization')
     res.redirect('/views/login')
 }
